@@ -1,0 +1,13 @@
+version: '3'
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.2
+    restart: always
+    volumes:
+      - ./data/mariadb/10.2:/var/lib/mysql
+      - ./config/mariadb/conf.d:/etc/mysql/conf.d
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+    ports:
+      - 3306:3306
