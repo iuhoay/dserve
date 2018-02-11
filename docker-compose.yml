@@ -7,10 +7,10 @@ services:
     volumes:
       - ./data/postgres/10.2/pgdata:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: 'root'
-      POSTGRES_PASSWORD: 'root'
+      POSTGRES_USER: '${POSTGRES_USER}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
     ports:
-      - 5432:5432
+      - ${POSTGRES_PORT}:5432
   mariadb:
     container_name: mariadb
     image: mariadb:10.2
@@ -21,13 +21,13 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
     ports:
-      - 3306:3306
+      - ${MARIADB_PORT}:3306
   redis:
     container_name: redis
     image: redis:latest
     restart: always
     ports:
-      - 6379:6379
+      - ${REDIS_PORT}:6379
   nginx:
     container_name: nginx
     image: nginx:stable
@@ -35,4 +35,4 @@ services:
     volumes:
       - ./data/nginx/html:/usr/share/nginx/html:ro
     ports:
-      - 80:80
+      - ${NGINX_PORT}:80

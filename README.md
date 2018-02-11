@@ -14,6 +14,7 @@
 ```shell
 $ git clone git@github.com:iuhoay/dserve.git
 $ cd dserve
+$ cp .env.default .env
 $ docker-compse up --no-start
 ```
 
