@@ -17,3 +17,11 @@ services:
     restart: always
     ports:
       - 6379:6379
+  nginx:
+    container_name: nginx
+    image: nginx:stable
+    restart: always
+    volumes:
+      - ./data/nginx/html:/usr/share/nginx/html:ro
+    ports:
+      - 80:80
