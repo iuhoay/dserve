@@ -36,3 +36,8 @@ services:
       - ./data/nginx/html:/usr/share/nginx/html:ro
     ports:
       - ${NGINX_PORT}:80
+  memcached:
+    container_name: memcached
+    image: memcached
+    ports:
+      - ${MEMCACHED_PORT}:11211
