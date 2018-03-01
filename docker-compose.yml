@@ -41,3 +41,9 @@ services:
     image: memcached
     ports:
       - ${MEMCACHED_PORT}:11211
+  elasticsearch:
+    container_name: elas
+    image: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
