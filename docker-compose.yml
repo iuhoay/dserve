@@ -11,6 +11,17 @@ services:
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
     ports:
       - ${POSTGRES_PORT}:5432
+  postgis:
+    container_name: postgis
+    image: mdillon/postgis
+    restart: always
+    volumes:
+      - ./data/postgres/10.2/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: '${POSTGRES_USER}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    ports:
+      - ${POSTGRES_PORT}:5432
   mariadb:
     container_name: mariadb
     image: mariadb:10.2
