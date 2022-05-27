@@ -3,18 +3,7 @@ services:
   postgres:
     container_name: postgres
     image: postgres:10.2
-    restart: always
-    volumes:
-      - ./data/postgres/10.2/pgdata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: '${POSTGRES_USER}'
-      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
-    ports:
-      - ${POSTGRES_PORT}:5432
-  postgis:
-    container_name: postgis
-    image: mdillon/postgis
-    restart: always
+    restart: "unless-stopped"
     volumes:
       - ./data/postgres/10.2/pgdata:/var/lib/postgresql/data
     environment:
@@ -25,7 +14,7 @@ services:
   mariadb:
     container_name: mariadb
     image: mariadb:10.2
-    restart: always
+    restart: "unless-stopped"
     volumes:
       - ./data/mariadb/10.2:/var/lib/mysql
       - ./config/mariadb/conf.d:/etc/mysql/conf.d
@@ -33,16 +22,27 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
     ports:
       - ${MARIADB_PORT}:3306
+  mysql:
+    container_name: mysql
+    image: mysql:8
+    restart: "unless-stopped"
+    volumes:
+      - ./data/mysql/8:/var/lib/mysql
+      - ./config/mysql/conf.d:/etc/mysql/conf.d
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+    ports:
+      - ${MYSQL_PORT}:3306
   redis:
     container_name: redis
     image: redis:latest
-    restart: always
+    restart: "unless-stopped"
     ports:
       - ${REDIS_PORT}:6379
   nginx:
     container_name: nginx
-    image: nginx:stable
-    restart: always
+    image: nginx:alpine
+    restart: "unless-stopped"
     volumes:
       - ./data/nginx/html:/usr/share/nginx/html:ro
     ports:
@@ -58,3 +58,26 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+  plex:
+    image: linuxserver/plex:1.26.0
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - ./data/plex:/config
+      - /home/iuhoay/Music:/music
+      - /run/media/iuhoay/MEDIA:/Media
+  clash:
+    image: dreamacro/clash
+    container_name: clash
+    volumes:
+      - ./data/clash/clash.yml:/root/.config/clash/config.yaml
+    ports:
+      - "7890:7890"
+      - "7891:7891"
+    restart: unless-stopped
+    network_mode: "host"
